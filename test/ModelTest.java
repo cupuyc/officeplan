@@ -5,13 +5,13 @@ import java.util.*;
 import play.mvc.*;
 import play.test.*;
 import play.libs.F.*;
-import play.db.jpa.*;
 
 import static play.test.Helpers.*;
 import static org.fest.assertions.Assertions.*;
 
 import models.*;
-import models.frame.Page;
+
+import com.avaje.ebean.*;
 
 public class ModelTest {
     
@@ -23,13 +23,9 @@ public class ModelTest {
     public void findById() {
         running(fakeApplication(), new Runnable() {
            public void run() {
-               JPA.withTransaction(new play.libs.F.Callback0() {
-                   public void invoke() {
-                       Computer macintosh = Computer.findById(21l);
-                       assertThat(macintosh.name).isEqualTo("Macintosh");
-                       assertThat(formatted(macintosh.introduced)).isEqualTo("1984-01-24");
-                   }
-               });
+               Computer macintosh = Computer.find.byId(21l);
+               assertThat(macintosh.name).isEqualTo("Macintosh");
+               assertThat(formatted(macintosh.introduced)).isEqualTo("1984-01-24");
            }
         });
     }
@@ -38,13 +34,9 @@ public class ModelTest {
     public void pagination() {
         running(fakeApplication(inMemoryDatabase()), new Runnable() {
            public void run() {
-               JPA.withTransaction(new play.libs.F.Callback0() {
-                   public void invoke() {
-                       Page<Computer> computers = Computer.page(1, 20, "name", "ASC", "");
-                       assertThat(computers.getTotalRowCount()).isEqualTo(574);
-                       assertThat(computers.getList().size()).isEqualTo(20);
-                   }
-               });
+               Page<Computer> computers = Computer.page(1, 20, "name", "ASC", "");
+               assertThat(computers.getTotalRowCount()).isEqualTo(574);
+               assertThat(computers.getList().size()).isEqualTo(20);
            }
         });
     }

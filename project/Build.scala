@@ -4,15 +4,15 @@ import PlayProject._
 
 object ApplicationBuild extends Build {
 
-    val appName         = "computer-database-jpa"
+    val appName         = "computer-database"
     val appVersion      = "1.0"
 
     val appDependencies = Seq(
-      "org.hibernate" % "hibernate-entitymanager" % "3.6.9.Final"
+      // Add your project dependencies here,
     )
 
     val main = PlayProject(appName, appVersion, appDependencies, mainLang = JAVA).settings(
-      ebeanEnabled := false   
+      // Add your own project settings here      
     )
 
 }

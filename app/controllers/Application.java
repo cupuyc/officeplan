@@ -1,14 +1,14 @@
 package controllers;
 
-import models.Computer;
-import models.Office;
-import play.data.Form;
-import play.db.jpa.Transactional;
-import play.mvc.Controller;
-import play.mvc.Result;
-import views.html.createForm;
-import views.html.editForm;
-import views.html.list;
+import java.util.*;
+
+import play.mvc.*;
+import play.data.*;
+import play.*;
+
+import views.html.*;
+
+import models.*;
 
 /**
  * Manage a database of computers
@@ -21,11 +21,7 @@ public class Application extends Controller {
     public static Result GO_HOME = redirect(
         routes.Application.list(0, "name", "asc", "")
     );
-
-    public static Result GO_OFFICES = redirect(
-            routes.Application.offices(0, "name", "asc", "")
-        );
-
+    
     /**
      * Handle default path requests, redirect to computers list
      */
@@ -33,17 +29,14 @@ public class Application extends Controller {
         return GO_HOME;
     }
 
-    @Transactional(readOnly=true)
-    public static Result offices(int page, String sortBy, String order, String filter) {
-        return ok(
-            views.html.offices.render(
-                Office.page(page, 10, sortBy, order, filter),
-                sortBy, order, filter
-            )
-        );
-    }
-
-    @Transactional(readOnly=true)
+    /**
+     * Display the paginated list of computers.
+     *
+     * @param page Current page number (starts from 0)
+     * @param sortBy Column to be sorted
+     * @param order Sort order (either asc or desc)
+     * @param filter Filter applied on computer names
+     */
     public static Result list(int page, String sortBy, String order, String filter) {
         return ok(
             list.render(
@@ -53,15 +46,23 @@ public class Application extends Controller {
         );
     }
     
+//    public static Result offices(int page, String sortBy, String order, String filter) {
+//        return ok(
+//            list.render(
+//                Office.page(page, 10, sortBy, order, filter),
+//                sortBy, order, filter
+//            )
+//        );
+//    }
+    
     /**
      * Display the 'edit form' of a existing Computer.
      *
      * @param id Id of the computer to edit
      */
-    @Transactional(readOnly=true)
     public static Result edit(Long id) {
         Form<Computer> computerForm = form(Computer.class).fill(
-            Computer.findById(id)
+            Computer.find.byId(id)
         );
         return ok(
             editForm.render(id, computerForm)
@@ -73,7 +74,6 @@ public class Application extends Controller {
      *
      * @param id Id of the computer to edit
      */
-    @Transactional
     public static Result update(Long id) {
         Form<Computer> computerForm = form(Computer.class).bindFromRequest();
         if(computerForm.hasErrors()) {
@@ -87,7 +87,6 @@ public class Application extends Controller {
     /**
      * Display the 'new computer form'.
      */
-    @Transactional(readOnly=true)
     public static Result create() {
         Form<Computer> computerForm = form(Computer.class);
         return ok(
@@ -98,7 +97,6 @@ public class Application extends Controller {
     /**
      * Handle the 'new computer form' submission 
      */
-    @Transactional
     public static Result save() {
         Form<Computer> computerForm = form(Computer.class).bindFromRequest();
         if(computerForm.hasErrors()) {
@@ -112,9 +110,8 @@ public class Application extends Controller {
     /**
      * Handle computer deletion
      */
-    @Transactional
     public static Result delete(Long id) {
-        Computer.findById(id).delete();
+        Computer.find.ref(id).delete();
         flash("success", "Computer has been deleted");
         return GO_HOME;
     }

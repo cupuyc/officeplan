@@ -48,4 +48,10 @@ public class Page<T extends Object> {
 		int end = start + Math.min(pageSize, list.size()) - 1;
 		return start + " to " + end + " of " + totalRowCount;
 	}
+	
+	public String getDisplayXtoYofZ(String labelTo, String labelOf) {
+		int start = ((pageIndex - 1) * pageSize + 1);
+		int end = start + Math.min(pageSize, list.size()) - 1;
+		return start + labelTo + end + labelOf + totalRowCount;
+	}
 }

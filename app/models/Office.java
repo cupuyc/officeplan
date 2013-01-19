@@ -1,12 +1,12 @@
 package models;
 
+import com.avaje.ebean.*;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import models.frame.Page;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
@@ -35,14 +35,12 @@ public class Office extends Model {
 	public static Finder<Long, Office> find = new Finder<Long, Office>(
 			Long.class, Office.class);
 
-	public static Page<Office> page(int page, int pageSize, String sortBy,
-			String order, String filter) {
-		return new Page(
-				find.where()
-					.ilike("name", "%" + filter + "%")
-					.orderBy(sortBy + " " + order)
-					.findPagingList(pageSize)
-					.getPage(page), 
-				pageSize);
-	}
+	public static Page<Office> page(int page, int pageSize, String sortBy, String order, String filter) {
+        return 
+            find.where()
+                .ilike("name", "%" + filter + "%")
+                .orderBy(sortBy + " " + order)
+                .findPagingList(pageSize)
+                .getPage(page);
+    }
 }
