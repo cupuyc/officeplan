@@ -24,12 +24,12 @@ create table employee (
   constraint pk_employee primary key (id))
 ;
 
-create table office (
+create table session (
   id                        bigint not null,
   name                      varchar(255),
   introduced                timestamp,
   discontinued              timestamp,
-  constraint pk_office primary key (id))
+  constraint pk_session primary key (id))
 ;
 
 create sequence company_seq;
@@ -38,7 +38,7 @@ create sequence computer_seq;
 
 create sequence employee_seq;
 
-create sequence office_seq;
+create sequence session_seq;
 
 alter table computer add constraint fk_computer_company_1 foreign key (company_id) references company (id) on delete restrict on update restrict;
 create index ix_computer_company_1 on computer (company_id);
@@ -55,7 +55,7 @@ drop table if exists computer;
 
 drop table if exists employee;
 
-drop table if exists office;
+drop table if exists session;
 
 SET REFERENTIAL_INTEGRITY TRUE;
 
@@ -65,5 +65,5 @@ drop sequence if exists computer_seq;
 
 drop sequence if exists employee_seq;
 
-drop sequence if exists office_seq;
+drop sequence if exists session_seq;
 

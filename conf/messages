@@ -1,6 +1,6 @@
 # Messages
 
 computers.list.title={0,choice,0#No computers|1#One computer|1<{0,number,integer} computers} found
-offices.list.title={0,choice,0#No offices|1#One office|1<{0,number,integer} offices} found
+sessions.list.title={0,choice,0#No sessions|1#One session|1<{0,number,integer} sessions} found
 
 
