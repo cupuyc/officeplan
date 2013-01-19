@@ -46,14 +46,14 @@ public class Application extends Controller {
         );
     }
     
-//    public static Result offices(int page, String sortBy, String order, String filter) {
-//        return ok(
-//            list.render(
-//                Office.page(page, 10, sortBy, order, filter),
-//                sortBy, order, filter
-//            )
-//        );
-//    }
+    public static Result offices(int page, String sortBy, String order, String filter) {
+        return ok(
+            offices.render(
+                Office.page(page, 10, sortBy, order, filter),
+                sortBy, order, filter
+            )
+        );
+    }
     
     /**
      * Display the 'edit form' of a existing Computer.
